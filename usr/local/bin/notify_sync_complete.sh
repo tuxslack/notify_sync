@@ -235,14 +235,37 @@ center_xterm
 # ----------------------------------------------------------------------------------------
 
 
+# Para que esse valor seja zero, não é necessário que todos os programas estejam fora de 
+# uso, mas a memória "dirty" é um reflexo de como o sistema está lidando com as escritas 
+# em disco. Se a memória "dirty" está em zero, isso geralmente significa que não há dados 
+# pendentes para serem escritos no disco (ou seja, o sistema está atualizando ou 
+# sincronizando com o disco de forma eficiente). Isso pode ocorrer em situações como:
+# 
+#   O sistema acabou de fazer uma sincronização com o disco.
+# 
+#   Não há atividades de escrita na memória ou no sistema de arquivos no momento.
+# 
+# Então, não é necessário que todos os programas estejam fora de uso, mas seria uma boa 
+# prática, em termos de teste, ter menos atividade no sistema, já que programas com muita 
+# leitura e escrita podem gerar uma quantidade maior de memória "dirty".
+# 
+# Se a memória "dirty" estiver constantemente em um valor alto, isso pode indicar que o 
+# sistema está tendo dificuldades para escrever essas mudanças no disco, o que poderia ser 
+# uma situação anormal dependendo da carga do sistema.
+# 
+# Portanto, o valor da memória "dirty" pode ser zero se o sistema não estiver realizando 
+# muitas operações de escrita, mas não é necessário que o usuário tenha todos os programas 
+# fora de uso para isso acontecer.
+
+
 echo "
 
 Notify Sync
 ===========
 
-Cansado de não saber quanto tempo falta para o processo de sync terminar 
-e poder finalmente remover o pendrive sem correr o risco de corromper os 
-dados que estão sendo copiados?
+Cansado de não saber quanto tempo falta para o processo de sincronização 
+terminar e poder finalmente remover o pendrive sem correr o risco de corromper 
+os dados que estão sendo copiados?
 
 Este script monitora os dados em memória que ainda não foram enviados para 
 o disco. Esses dados fazem parte da área 'buff/cache', que pode ser observada 
@@ -250,16 +273,25 @@ ao executar o comando free.
 
 O objetivo é notificar o usuário quando a escrita de dados no disco for 
 concluída. O script monitora a linha 'Dirty' em /proc/meminfo e envia uma 
-notificação quando o valor de 'Dirty' atingir zero, indicando que todos os 
-dados foram gravados no disco.
+notificação quando o valor de 'Dirty' atingir zero, indicando que todos os dados 
+foram gravados no disco.
 
-O processo começará em 30 segundos...
+Não é necessário que todos os programas estejam fora de uso, mas seria uma boa 
+prática, em termos de teste, ter menos atividade no sistema, já que programas com 
+muita leitura e escrita podem gerar uma maior quantidade de memória 'dirty'.
+
+Para garantir que a memória 'dirty' não se acumule, o comando sync pode ser usado 
+para forçar a escrita de dados pendentes para o disco.
+
+
+Pressione Enter para começar o processo...
 
 -------------------------------------------------------------------------
 
 "
 
-sleep 30
+read pausa
+
 
 
 # Loop para verificar se a escrita de dados terminou
