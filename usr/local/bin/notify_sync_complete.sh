@@ -1,52 +1,75 @@
 #!/bin/bash
-
-
-# Hector Vido Silva e Fernando Souza
-
-# Data: 25/03/2025 as 22:24:39
-
+# 
+# ----------------------------------------------------------------------------------------
+# 
+# Autores: 
+#
+# Fernando Souza    <https://github.com/tuxslack>
+#
+# Hector Vido Silva <https://github.com/hector-vido>
+#
+# Data de Criação: 26/03/2025 as 02:29:26
+# Última Modificação: 
+# Versão: 1.0
+# Licença: GPL
+#
 # https://github.com/tuxslack/notify_sync
-
-
+# 
+# Script: notify_sync_complete.sh
+#
+# Descrição: Este script exibe a quantidade de memória "dirty" (modificada mas não salva no disco)
+#            no sistema. Utiliza o comando 'grep' para extrair informações do arquivo 
+#            /proc/meminfo e 'awk' para filtrar o valor relevante.
+# 
 # Saber quanto tempo o sync demorará.
-
-
-
-# Dica aleatória:
-
+#
+# 
 # Cansado de saber quanto tempo demorará para o "sync" terminar e podermos finalmente 
 # remover o pendrive sem corromper o que está sendo copiado?
-
+# 
 # Dê um "cat /proc/meminfo" e procure pela linha "dirty". Ela representa os dados em 
-# memória que ainda não foram enviadas para o disco - neste caso ~1.6GB.
-
+# memória que ainda não foram enviadas para o disco.
+# 
 # Essa área faz parte daquele "buff/cache" que vemos ao executamos "free".
-
-
+# 
+# 
 # Caso de uso:
-
-# Queria ter visto essa dica uma semana atrás, quando corrompi toda uma copia ao remover o pendrive kkkkkkk
-
-
-# https://www.linkedin.com/posts/hectorvido_linux-opensource-shell-activity-7307103238019780608-MH2d?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABz8zocBPtpnfQaeYybvNrE0EZZNaARCQZY
-
+# 
+# Queria ter visto essa dica uma semana atrás, quando corrompi toda uma copia ao remover 
+# o pendrive kkkkkkk
+# 
+# 
+#
 # ----------------------------------------------------------------------------------------
-
-
-# Para notificar o usuário quando a escrita de dados no disco terminar. O script irá 
-# monitorar a linha "Dirty" em /proc/meminfo e notificará o usuário quando o valor de 
-# "Dirty" for igual a zero, indicando que todos os dados foram gravados no disco.
-
-
+#
+# Dependências: notify-send, wmctrl, xterm, grep, awk, date
+# 
+# 
+#
+# Como usar:
+#
+# 1. Execute este script no terminal.
+# 2. O valor da memória dirty será exibido.
+#
+#
 # Torne o script executável:
-
+#
 # chmod +x notify_sync_complete.sh
-
-# vExecute o script:
-
+#
+# Execute o script:
+#
 # ./notify_sync_complete.sh
-
-
+#
+#
+# Observações:
+# 
+# - Pode ser modificado para incluir mais informações de memória, caso necessário.
+#
+#
+#
+# https://www.linkedin.com/posts/hectorvido_linux-opensource-shell-activity-7307103238019780608-MH2d?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABz8zocBPtpnfQaeYybvNrE0EZZNaARCQZY
+#
+# ----------------------------------------------------------------------------------------
 
 
 
@@ -211,6 +234,32 @@ center_xterm
 
 # ----------------------------------------------------------------------------------------
 
+
+echo "
+
+Notify Sync
+===========
+
+Cansado de não saber quanto tempo falta para o processo de sync terminar 
+e poder finalmente remover o pendrive sem correr o risco de corromper os 
+dados que estão sendo copiados?
+
+Este script monitora os dados em memória que ainda não foram enviados para 
+o disco. Esses dados fazem parte da área 'buff/cache', que pode ser observada 
+ao executar o comando free.
+
+O objetivo é notificar o usuário quando a escrita de dados no disco for 
+concluída. O script monitora a linha 'Dirty' em /proc/meminfo e envia uma 
+notificação quando o valor de 'Dirty' atingir zero, indicando que todos os 
+dados foram gravados no disco.
+
+O processo começará em 30 segundos...
+
+-------------------------------------------------------------------------
+
+"
+
+sleep 30
 
 
 # Loop para verificar se a escrita de dados terminou
